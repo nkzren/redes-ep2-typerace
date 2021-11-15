@@ -1,0 +1,4 @@
+rootProject.name = 'redes-ep2'
+include 'client'
+include 'server'
+
