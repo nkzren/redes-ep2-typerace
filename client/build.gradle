@@ -25,3 +25,7 @@ test {
 application {
     mainClass = 'br.usp.typerace.client.Client'
 }
+
+run {
+    standardInput = System.in
+}
