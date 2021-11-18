@@ -1,4 +1,4 @@
-package br.usp.typerace.server;
+package br.usp.each.typerace.server;
 
 import org.java_websocket.WebSocket;
 import org.java_websocket.handshake.ClientHandshake;

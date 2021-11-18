@@ -3,7 +3,7 @@ plugins {
     id 'application'
 }
 
-group 'br.usp'
+group 'br.usp.each.typerace'
 version '1.0-SNAPSHOT'
 
 repositories {
