@@ -23,5 +23,5 @@ test {
 }
 
 application {
-    mainClass = 'br.usp.typerace.server.Server'
+    mainClass = 'br.usp.each.typerace.server.Server'
 }

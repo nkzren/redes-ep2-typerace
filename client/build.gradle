@@ -23,7 +23,7 @@ test {
 }
 
 application {
-    mainClass = 'br.usp.typerace.client.Client'
+    mainClass = 'br.usp.each.typerace.client.Client'
 }
 
 run {
