@@ -5,10 +5,15 @@ import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
 
 import java.net.InetSocketAddress;
+import java.util.Map;
 
 public class Server extends WebSocketServer {
-    public Server(int port) {
+
+    private final Map<String, WebSocket> connections;
+
+    public Server(int port, Map<String, WebSocket> connections) {
         super(new InetSocketAddress(port));
+        this.connections = connections;
     }
 
     @Override
@@ -35,12 +40,4 @@ public class Server extends WebSocketServer {
     public void onStart() {
         // TODO: Implementar
     }
-
-    public static void main(String[] args) {
-        System.out.println("Iniciando servidor...");
-
-        WebSocketServer server = new Server(8080);
-        server.start();
-    }
-
 }

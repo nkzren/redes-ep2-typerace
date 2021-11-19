@@ -30,10 +30,4 @@ public class Client extends WebSocketClient {
     public void onError(Exception ex) {
         // TODO: Implementar
     }
-
-    public static void main(String[] args) {
-        System.out.println("Iniciando cliente...");
-
-        // TODO: Implementar
-    }
 }
