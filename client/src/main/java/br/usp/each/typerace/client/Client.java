@@ -26,6 +26,7 @@ public class Client extends WebSocketClient {
         // TODO: Implementar
     }
 
+
     @Override
     public void onError(Exception ex) {
         // TODO: Implementar
