@@ -7,13 +7,15 @@ import java.net.URI;
 
 public class Client extends WebSocketClient {
 
+    public boolean playing = false;
+
     public Client(URI serverUri) {
         super(serverUri);
     }
 
     @Override
     public void onOpen(ServerHandshake handshakedata) {
-        // TODO: Implementar
+        
     }
 
     @Override

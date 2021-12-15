@@ -2,8 +2,8 @@
 Repositório para o EP2 de Redes de Computadores, EACH-USP - 2021/2
 
 # Integrantes
-* Integrante 1 - 1111111
-* Integrante 2 - 2222222
+* Gabriel Braga Lagrotaria de Oliveira - 11796600
+* Rodrigo Fernandes Gomes Vieira - 11796548
 * Integrante 3 - 3333333
 * Integrante 4 - 4444444
 

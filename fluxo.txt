@@ -1,0 +1,21 @@
+Playing(true,false)
+Conexões de clientes:
+Se playing=true, conexão é bloqueada.
+Se playing=false, conexao é aceita.
+
+Se a conexao é aceita, server manda um broadcast(mensagem para todos) falando a quantidade de jogadores conectado.
+Início do jogo:
+Se algum jogador mandar "iniciar", playing = true
+Quando playing = true, server cria uma lista de palavras e manda a lista de palavras pra todos players
+Toda mensagem mandada por players serão consideradas tentativas de respostas
+Quando um player atingir número de acertos = tamanho da lista de palavras:
+Enviar a todos os clientes o sinal de fim da partida, junto com as informa-
+ções de colocação, a quantidade de palavras digitadas correta e incorre-
+tamente de cada jogador, e a duração da partida.
+Sinal de fim de partida = "Acabou a partida!"
+Colocação = n° de acertos
+Quando um player atingir número de acertos = tamanho da lista de palavras:
+Enviar a todos os clientes o sinal de fim da partida(broadcast), junto com as informa-
+ções de colocação(broadcast), a quantidade de palavras digitadas correta e incorre-
+tamente de cada jogador, e a duração da partida(broadcast).
+] Rafael: Playing = false
