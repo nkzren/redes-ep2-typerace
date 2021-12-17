@@ -20,7 +20,20 @@ public class Client extends WebSocketClient {
 
     @Override
     public void onMessage(String message) {
-        // TODO: Implementar
+        try{
+            System.out.println(Integer.parseInt(message)+" jogadores conectados");
+        }catch(Exception e){
+            if(!playing){
+                playing = true;
+                System.out.println("Digite as palavras:");
+                System.out.println(message.split(","));
+            }
+            else{
+                playing = false;
+                System.out.println(message);
+            }
+        }
+        
     }
 
     @Override

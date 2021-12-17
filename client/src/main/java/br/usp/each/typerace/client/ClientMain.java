@@ -27,7 +27,7 @@ public class ClientMain {
            ele deve se conectar e o seu ID?
         */
         String removeMe = "ws://localhost:8080";
-        String removeMe2 = "dada";
+        String removeMe2 = "dada2";
         Scanner sc = new Scanner(System.in);
 
         try {
@@ -46,9 +46,9 @@ public class ClientMain {
             client.send(clientInput);
             String clientTry = "";
             client.playing = true;
-            System.out.println("Digite as palavras:");
             while(client.playing){
                 clientTry = sc.nextLine();
+                System.out.println(removeMe2+"/"+clientTry);
                 client.send(removeMe2+"/"+clientTry);
             }
         } catch (URISyntaxException e) {

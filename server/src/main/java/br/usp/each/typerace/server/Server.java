@@ -10,12 +10,19 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.TreeSet;
 
 public class Server extends WebSocketServer {
     private boolean playing;
     private final Map<String, WebSocket> connections; 
-    private final Map<String/*clientId*/, Set<String>/*palavras não acertadas*/ > mapaPalavras;
+    private final Map<String/*clientId*/, Player> mapaPalavras;
     private String lista = "batata,feijao,arroz";
+    private int time = 0;
+    private int min = 0;
+    private int sec = 0;
+    Timer cronometro = new Timer();
 
     public Server(int port, Map<String, WebSocket> connections) {
         super(new InetSocketAddress(port));
@@ -52,26 +59,38 @@ public class Server extends WebSocketServer {
                 }
                 Iterator<String> clientes = connections.keySet().iterator();
                 while(clientes.hasNext()){
-                    mapaPalavras.put(clientes.next(), new HashSet<>(palavrasSet));
+                    String clientId = clientes.next();
+                    mapaPalavras.put(clientId, new Player(palavrasSet, clientId));
                 }
+                cronometra(true);
                 broadcast(lista);
             break;
             default:
+            System.out.println(message);
                 String[] values = message.split("/");
                 if(playing){
-                    System.out.println(values[0]+"/"+values[1]);
-                    if(lista.contains(values[1])){
-                        Set<String> palavrasClient = mapaPalavras.get(values[0]);
-                        palavrasClient.remove(values[1]);
-                        if(palavrasClient.size() == 0){
-                            System.out.println("terminou");
-                            broadcast("terminou");
+                    Player playerSentWord = mapaPalavras.get(values[0]);
+                    if (playerSentWord.contabilizeNewWord(values[1])) {              
+                        cronometra(false);
+                        this.time = 0;
+                        Player.restartLastWordTimeClassification();
+                        TreeSet<Player> classificacao = new TreeSet<>(mapaPalavras.values());
+                        String classificacaoStr = "PARTIDA FINALIZADA \n Tempo de duração: " + min + " : " + sec + "\n";
+                        int countClassificacao = 1;
+                        for(Player player : classificacao){
+                            classificacaoStr += countClassificacao + "º -" + player.toString()+"\n";
+                            countClassificacao++;
                         }
+                        System.out.println(classificacaoStr);
+                        broadcast(classificacaoStr);
                     }
                 }
             break;
         }
     }
+    
+            
+       
 
     @Override
     public void onError(WebSocket conn, Exception ex) {
@@ -81,5 +100,22 @@ public class Server extends WebSocketServer {
     @Override
     public void onStart() {
         // TODO: Implementar
+    }
+
+    public void cronometra(boolean flag){
+        if(!flag){
+            cronometro.cancel();
+            return;
+        }
+        
+        TimerTask task = new TimerTask() {
+            public void run(){
+                time++;
+                sec = time % 60;
+                min = time / 60;
+                System.out.println(min+":"+sec);
+            }
+        }; 
+        cronometro.schedule(task,0,1000);
     }
 }
