@@ -5,50 +5,72 @@ import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
 
 import java.net.InetSocketAddress;
+import java.nio.ByteBuffer;
+import java.util.LinkedList;
 import java.util.Map;
 
 public class Server extends WebSocketServer {
 
-    private final Map<String, WebSocket> connections;
+    private final Map<Integer, WebSocket> connections;
+    private final LinkedList<Integer> idList = new LinkedList<>();
     private int counter = 0;
 
-    public Server(int port, Map<String, WebSocket> connections) {
+    public Server(int port, Map<Integer, WebSocket> connections) {
         super(new InetSocketAddress(port));
         this.connections = connections;
     }
 
     @Override
     public void onOpen(WebSocket conn, ClientHandshake handshake) {
+        ByteBuffer id = assignId();
+        conn.send(id); // Manda o id para o cliente
+        conn.setAttachment(id.getInt(0)); 
         conn.send( "Bem vindo ao servidor!" ); //This method sends a message to the new client
-        broadcast( "Nova conexao de " + handshake.getResourceDescriptor() +
-                "\njogardores conectados: " + (++counter) ); //This method sends a message to all clients connected
+        broadcast( "Nova conexao de jogador de id: " + conn.getAttachment() +
+                "\nJogadores conectados: " + (++counter) ); //This method sends a message to all clients connected
         System.out.println( "new connection to " + conn.getRemoteSocketAddress() );
-        connections.put( conn.getResourceDescriptor(), conn );
+        connections.put( conn.getAttachment(), conn );
     }
 
     @Override
     public void onClose(WebSocket conn, int code, String reason, boolean remote) {
-        System.out.println( "jogador " + conn.getResourceDescriptor() +
+        int id = conn.getAttachment();
+        idList.remove(Integer.valueOf(id));
+        System.out.println( "Jogador de id: " + id +
                 " desconectou com codigo " + code + " info adicional: " + reason );
-        broadcast( "jogardores conectados: " + (--counter) );
+        broadcast( "Jogador de id: " + id + " desconectou" +
+                "\nJogadores conectados: " + (--counter) );
 
     }
 
     @Override
     public void onMessage(WebSocket conn, String message) {
-        System.out.println( conn.getResourceDescriptor() + " enviou " + message );
+        System.out.println( "Jogador de id: "+ conn.getAttachment() + " enviou " + message);
     }
 
     @Override
     public void onError(WebSocket conn, Exception ex) {
-        System.err.println( "um erro ocorreu em " + conn.getRemoteSocketAddress()  + ":" + ex );
+        System.err.println( "Um erro ocorreu em " + conn.getRemoteSocketAddress()  + ":" + ex);
 
     }
 
     @Override
     public void onStart() {
-        System.out.println("Endereco: "+getAddress() );
-        System.out.println( "Servidor iniciado com sucesso!" );
+        System.out.println("Endereco: "+ getAddress());
+        System.out.println("Servidor iniciado com sucesso!");
 
+    }
+
+    // Retorna o menor id ainda não utilizado e o adiciona em idList
+    public ByteBuffer assignId() {
+        ByteBuffer ret = ByteBuffer.allocate(Integer.BYTES);
+        int i = 1;
+
+        while(!idList.isEmpty() && idList.contains(i))
+            i++;
+
+        idList.add(i);
+        ret.putInt(0, i);
+        return ret;
     }
 }

@@ -10,16 +10,17 @@ import java.util.Scanner;
 
 public class ClientMain {
 
-    private WebSocketClient client;
+    private Client client;
 
-    public ClientMain(WebSocketClient client) {
+    public ClientMain(Client client) {
         this.client = client;
     }
 
-    public void init(String idCliente) {
-        System.out.println("Iniciando cliente: " + idCliente);
+    public void init() {
+        System.out.println("Iniciando cliente.");
         // TODO: Implementar
         client.connect();
+
         String str;
         Scanner sc = new Scanner(System.in);
 
@@ -35,20 +36,18 @@ public class ClientMain {
 
     public static void main(String[] args) {
         /*
-           FIXME: Remover essas strings fixas
-           Como podemos fazer para que o cliente receba um parâmetro indicando a qual servidor
-           ele deve se conectar e o seu ID?
+           FIXME: ID criado dinâmicamente na conexão, usar attachment para identificar cliente.
+           Remover resource descriptor?
         */
         String removeMe = "ws://localhost:8080/idCliente";
-        String removeMe2 = "idCliente";
 
         try {
             URI uri = new URI(removeMe);
-            WebSocketClient client = new Client(uri);
+            Client client = new Client(uri);
 
             ClientMain main = new ClientMain(client);
 
-            main.init(removeMe2);
+            main.init();
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
