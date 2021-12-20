@@ -15,6 +15,9 @@ public class Server extends WebSocketServer {
     private final LinkedList<Integer> idList = new LinkedList<>();
     private int counter = 0;
 
+    private boolean gameStarted = false;
+    private Game typeraceGame;
+
     public Server(int port, Map<Integer, WebSocket> connections) {
         super(new InetSocketAddress(port));
         this.connections = connections;
@@ -30,28 +33,56 @@ public class Server extends WebSocketServer {
                 "\nJogadores conectados: " + (++counter) ); //This method sends a message to all clients connected
         System.out.println( "new connection to " + conn.getRemoteSocketAddress() );
         connections.put( conn.getAttachment(), conn );
+
+        typeraceGame.addPlayer(new Player(conn.getAttachment()));
     }
 
     @Override
     public void onClose(WebSocket conn, int code, String reason, boolean remote) {
         int id = conn.getAttachment();
         idList.remove(Integer.valueOf(id));
+        connections.remove(conn.getAttachment());
         System.out.println( "Jogador de id: " + id +
                 " desconectou com codigo " + code + " info adicional: " + reason );
         broadcast( "Jogador de id: " + id + " desconectou" +
                 "\nJogadores conectados: " + (--counter) );
-
+                
+        typeraceGame.removePlayer(conn.getAttachment());
     }
 
     @Override
     public void onMessage(WebSocket conn, String message) {
-        System.out.println( "Jogador de id: "+ conn.getAttachment() + " enviou " + message);
+
+        if (!gameStarted){
+            if (message.equalsIgnoreCase("start")){
+
+                // broadcast(lista de palavras);
+                gameStarted = true;
+                // game start 
+            }
+
+            else if (message.equalsIgnoreCase("exit")){
+                // qual codigo e remote?
+                onClose(conn, 0, "exit before game start", false);
+            }
+
+            broadcast(message);
+        }
+
+        while (true){
+
+            // jogo iniciado
+
+        }
+
     }
 
     @Override
     public void onError(WebSocket conn, Exception ex) {
         System.err.println( "Um erro ocorreu em " + conn.getRemoteSocketAddress()  + ":" + ex);
 
+        connections.remove(conn.getAttachment());
+        players.remove(conn.getAttachment());
     }
 
     @Override
@@ -59,6 +90,7 @@ public class Server extends WebSocketServer {
         System.out.println("Endereco: "+ getAddress());
         System.out.println("Servidor iniciado com sucesso!");
 
+        typeraceGame = new Game();
     }
 
     // Retorna o menor id ainda não utilizado e o adiciona em idList
@@ -73,4 +105,5 @@ public class Server extends WebSocketServer {
         ret.putInt(0, i);
         return ret;
     }
+
 }

@@ -1,17 +1,21 @@
 package br.usp.each.typerace.server;
 
-public class Player {
+import java.util.List;
 
-    private final id;
+
+public class Player implements Comparable<Player> {
+
+    private final Integer id;
     private int correct;
     private int wrong;
-    private long time;
+    
+    private List<String> wordsRemaining;
 
-    public Player (int id){
+
+    public Player (Integer id){
         this.id = id;
         this.correct = 0;
         this.wrong = 0;
-        this.time = 0;
     }
 
     public int getId(){
@@ -26,12 +30,31 @@ public class Player {
         return this.wrong;
     }
 
-    public void increaseCorrect(){
-        this.correct++;
+
+    public boolean wordTyped(String word){
+
+        if (wordsRemaining.contains(word)){
+            wordsRemaining.remove(word);
+            this.correct++;
+        }
+        else {
+            this.wrong++;
+        }
+
+        return playerStatus();
     }
 
-    public void increaseWrong(){
-        this.wrong++;
+
+    // status do jogador
+    public boolean playerStatus(){
+
+        if (wordsRemaining.isEmpty()) return true;
+        return false;
     }
+
+    @Override
+	public int compareTo(Player pl) {
+		return Integer.compare(this.getCorrect(), pl.getCorrect());
+	}
 
 }
