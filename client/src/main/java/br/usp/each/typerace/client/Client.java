@@ -26,10 +26,9 @@ public class Client extends WebSocketClient {
             if(!playing){
                 playing = true;
                 System.out.println("Digite as palavras:");
-                System.out.println(message.split(","));
+                System.out.println(message);
             }
             else{
-                playing = false;
                 System.out.println(message);
             }
         }

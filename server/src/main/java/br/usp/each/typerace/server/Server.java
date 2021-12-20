@@ -5,6 +5,7 @@ import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
 
 import java.net.InetSocketAddress;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -42,7 +43,6 @@ public class Server extends WebSocketServer {
 
     @Override
     public void onClose(WebSocket conn, int code, String reason, boolean remote) {
-        // TODO: Implementar
     }
 
     @Override
@@ -73,11 +73,12 @@ public class Server extends WebSocketServer {
                     if (playerSentWord.contabilizeNewWord(values[1])) {              
                         cronometra(false);
                         this.time = 0;
+                        this.playing = false;
                         Player.restartLastWordTimeClassification();
                         TreeSet<Player> classificacao = new TreeSet<>(mapaPalavras.values());
                         String classificacaoStr = "PARTIDA FINALIZADA \n Tempo de duração: " + min + " : " + sec + "\n";
                         int countClassificacao = 1;
-                        for(Player player : classificacao){
+                        for(Player player : classificacao.descendingSet()){
                             classificacaoStr += countClassificacao + "º -" + player.toString()+"\n";
                             countClassificacao++;
                         }

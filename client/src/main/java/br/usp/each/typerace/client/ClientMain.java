@@ -27,7 +27,7 @@ public class ClientMain {
            ele deve se conectar e o seu ID?
         */
         String removeMe = "ws://localhost:8080";
-        String removeMe2 = "dada2";
+        String removeMe2 = "dada3";
         Scanner sc = new Scanner(System.in);
 
         try {
@@ -48,6 +48,8 @@ public class ClientMain {
             client.playing = true;
             while(client.playing){
                 clientTry = sc.nextLine();
+                System.out.println(removeMe2);
+                System.out.println(clientTry);
                 System.out.println(removeMe2+"/"+clientTry);
                 client.send(removeMe2+"/"+clientTry);
             }

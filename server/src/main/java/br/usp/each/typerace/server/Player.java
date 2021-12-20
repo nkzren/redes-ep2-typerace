@@ -50,7 +50,7 @@ public class Player implements Comparable<Player>{
         if(qtdAcertosDif != 0)
             return qtdAcertosDif;
         else{
-            int errorDif = this.errorQuantity - otherPlayer.errorQuantity;
+            int errorDif = otherPlayer.errorQuantity - this.errorQuantity;
             if(errorDif != 0)
                 return errorDif;
             else
