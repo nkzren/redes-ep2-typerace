@@ -20,24 +20,36 @@ Para rodar o servidor
 ```sh
 ./gradlew server:run
 ```
+ou
+```sh
+./gradlew server:run --console=plain
+```
+
+<br><br>
 
 Para rodar um cliente
 ```sh
+./gradlew client:run
+```
+ou
+```sh
 ./gradlew client:run --console=plain
 ```
+
 <br>
 
 ## Instruções do jogo
 
 * Regras do Jogo
 
-  •	Envie uma palavra por vez <br>
-  •	Não há ordem específica para enviar palavras<br>
-  •	Palavras podem ser maiúsculas ou minúsculas<br>
-  •	Palavras erradas não tiram ponto<br>
+  *	Envie uma palavra por vez <br>
+  *	Não há ordem específica para enviar palavras<br>
+  *	Palavras podem ser maiúsculas ou minúsculas<br>
+  *	Palavras erradas não tiram ponto<br><br>
   
-o	Comandos:<br>
+  
+* Comandos
 
-  o	Digite "Start " para começar<br>
-  o	Digite "Sair" para sair antes do jogo iniciar<br>
-  o	Digite "exit" para sair a qualquer hora<br>
+  *	Digite "start" para começar<br>
+  *	Digite "sair" para sair antes do jogo iniciar<br>
+  *	Digite "exit" para sair a qualquer hora<br>
