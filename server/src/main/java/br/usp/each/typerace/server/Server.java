@@ -8,6 +8,8 @@ import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.ArrayList;
+import java.util.*;
 
 public class Server extends WebSocketServer {
 
@@ -17,8 +19,7 @@ public class Server extends WebSocketServer {
 
     private boolean gameStarted = false;
     private Game typeraceGame;
-    private Map<Integer, Player> players; 
-
+    private Map<Integer, Player> players = new HashMap<>(); 
 
     public Server(int port, Map<Integer, WebSocket> connections) {
         super(new InetSocketAddress(port));
@@ -36,7 +37,7 @@ public class Server extends WebSocketServer {
         System.out.println( "new connection to " + conn.getRemoteSocketAddress() );
         connections.put( conn.getAttachment(), conn );
 
-        players.add(conn.getAttachment(), new Player(conn.getAttachment()));
+        players.put(conn.getAttachment(), new Player(conn.getAttachment(), typeraceGame.getWords()));
     }
 
     @Override
@@ -48,7 +49,7 @@ public class Server extends WebSocketServer {
                 " desconectou com codigo " + code + " info adicional: " + reason );
         broadcast( "Jogador de id: " + id + " desconectou" +
                 "\nJogadores conectados: " + (--counter) );
-                
+
         players.remove(conn.getAttachment());
     }
 
@@ -57,33 +58,38 @@ public class Server extends WebSocketServer {
 
         if (!gameStarted){
             if (message.equalsIgnoreCase("start")){
-                broadcast( typeraceGame.broadcastWords(players) );
-                typeraceGame.countTime();
+                broadcast("game start");
                 gameStarted = true;
+                broadcast("PALAVRAS : " + typeraceGame.getSentence());  
+                typeraceGame.countTime();                
             }
 
-            else if (message.equalsIgnoreCase("exit")){
-                // qual codigo e remote?
+            else if (message.equalsIgnoreCase("sair")){
                 onClose(conn, 0, "exit before game start", false);
             }
 
-            broadcast(message);
+            else
+                broadcast("Cliente " + conn.getAttachment() + " : " + message);
         }
 
-        while (gameStarted){
+        if (gameStarted) {
 
             Player pl = players.get(conn.getAttachment());
+            conn.send(message);
+
             if (pl.wordTyped(message) == true){
 
                 broadcast("game over");
                 gameStarted = false;
                 typeraceGame.stopTime();
                 broadcastStatics();
-
-                break;
             }
-
+            else{
+                broadcast("not yet");
+            }
         }
+
+
     }
 
     @Override
@@ -116,14 +122,16 @@ public class Server extends WebSocketServer {
     }
 
     public void broadcastStatics(){
+        broadcast("====================");
         broadcast("Duracao da partida : " + typeraceGame.timeElapsedSeconds() + "\n");
 
         broadcast("Ranking :");
         List<Player> rankedPl = typeraceGame.ranking(players);
         int i = 0;
         for (Player pl : rankedPl){
-            broadcast((++i) + " - " + pl.getId() + " : " + pl.getCorrect() + "corretas, " + pl.getWrong() + "erradas");
+            broadcast((++i) + " - " + pl.getId() + " : " + pl.getCorrect() + " corretas, " + pl.getWrong() + " erradas");
         }
+        broadcast("====================");
     }
 
 }

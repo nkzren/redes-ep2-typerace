@@ -11,13 +11,14 @@ public class Player implements Comparable<Player> {
     public List<String> wordsRemaining;
 
 
-    public Player (Integer id){
+    public Player (Integer id, List<String> words){
         this.id = id;
         this.correct = 0;
         this.wrong = 0;
+        this.wordsRemaining = words;
     }
 
-    public int getId(){
+    public Integer getId(){
         return this.id;
     }
 

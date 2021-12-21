@@ -26,7 +26,7 @@ public class ClientMain {
 
         //manda msg pro servidor e o servidor printa no console
         while(!client.isClosed()){
-            str = sc.next();
+            str = sc.nextLine();
             if(str.toLowerCase(Locale.ROOT).equals("exit")) break;
             client.send(str);
         }

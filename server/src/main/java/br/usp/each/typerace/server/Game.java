@@ -10,19 +10,19 @@ public class Game {
 
     private long timeStart;
     private long timeFinish;
-    private String sentence = "the size and age of the cosmos are beyond ordinary human understanding lost somewhere between immensity eternity is our tiny planetary home";
+    //private String sentence = "the size and age of the cosmos are beyond ordinary human understanding lost somewhere between immensity eternity is our tiny planetary home";
+    private String sentence = "teste isso";
     private List<String> words;
 
     public Game(){
         words = new ArrayList<String>(Arrays.asList(this.sentence.split(" ")));
     }
 
-    public String broadcastWords(Map<Integer, Player> players){
+    public List<String> getWords(){
+        return words;
+    }
 
-        for (Player pl : players.values()){
-            pl.wordsRemaining = this.words;
-        }
-
+    public String getSentence(){
         return sentence;
     }
 
@@ -41,7 +41,7 @@ public class Game {
     public List<Player> ranking(Map<Integer, Player> players){
 
         List<Player> pl = new ArrayList<Player>(players.values());
-        Collections.sort(pl);
+        Collections.sort(pl, Collections.reverseOrder());
 
         return pl;
     }
