@@ -3,58 +3,47 @@ package br.usp.each.typerace.client;
 import org.java_websocket.client.WebSocketClient;
 
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.Scanner;
 
 public class ClientMain {
 
     private WebSocketClient client;
 
+    private static final String server = "ws://localhost:8080";
+
     public ClientMain(WebSocketClient client) {
         this.client = client;
     }
 
     public void init(String idCliente) {
-        System.out.println("Iniciando cliente: " + idCliente);
+        System.out.println("Iniciando cliente...");
         client.addHeader("clientId", idCliente);
         client.connect();
     }
 
     public static void main(String[] args) {
-        /*
-           FIXME: Remover essas strings fixas
-           Como podemos fazer para que o cliente receba um parâmetro indicando a qual servidor
-           ele deve se conectar e o seu ID?
-        */
-        String removeMe = "ws://localhost:8080";
-        String removeMe2 = "dada3";
+
+        String line = "";
         Scanner sc = new Scanner(System.in);
 
-        try {
-            Client client = new Client(new URI(removeMe));
+        try{
+            Client client = new Client(new URI(server));
 
             ClientMain main = new ClientMain(client);
 
-            main.init(removeMe2);
+            main.init(client.getId());
 
-            String clientInput = "";
-            while(!clientInput.equals("iniciar") && !client.playing){
-                System.out.println("Quando quiser, digite \"iniciar\" e tecle enter para começar o jogo");
-                clientInput = sc.nextLine();
+            System.out.println("Digite 'fechar' para sair...");
+
+            while(!line.equals("fechar")){
+                if(line != null && line.trim() != ""){
+                    client.send(client.getId()+"$#"+line);
+                }
+                line = sc.nextLine();
             }
-            System.out.println(clientInput);
-            client.send(clientInput);
-            String clientTry = "";
-            client.playing = true;
-            while(client.playing){
-                clientTry = sc.nextLine();
-                System.out.println(removeMe2);
-                System.out.println(clientTry);
-                System.out.println(removeMe2+"/"+clientTry);
-                client.send(removeMe2+"/"+clientTry);
-            }
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
+
+        } catch(Exception e){
+            System.out.println("Erro no cliente, tente novamente mais tarde...");
         }
         
         sc.close();
