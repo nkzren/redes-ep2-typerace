@@ -14,6 +14,13 @@ public class Client extends WebSocketClient {
 
     private static String id = UUID.randomUUID().toString();
 
+    private static int MAX_RETRY = 5;
+
+    private void openConnection(){
+        this.addHeader("clientId", id);
+        this.connect();
+    }
+
     public String getId(){
         return this.id;
     }
@@ -37,8 +44,7 @@ public class Client extends WebSocketClient {
                 "+ Razão: "+reason+"\n");
         if(code == 405){
             id = UUID.randomUUID().toString();
-            this.addHeader("clientId", id);
-            this.connect();
+            openConnection();
         }
     }
 

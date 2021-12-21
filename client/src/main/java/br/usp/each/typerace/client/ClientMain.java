@@ -42,6 +42,9 @@ public class ClientMain {
                 line = sc.nextLine();
             }
 
+            if(client.isOpen())
+                client.close();
+
         } catch(Exception e){
             System.out.println("Erro no cliente, tente novamente mais tarde...");
         }

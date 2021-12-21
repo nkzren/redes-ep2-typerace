@@ -37,6 +37,7 @@ public class Server extends WebSocketServer {
                 connections.put(uuid, conn);
                 System.out.println("Cliente conectado com uuid ["+uuid+"]");
                 broadcast("Número de jogadores conectados no momento: "+connections.size());
+                broadcast("Digite iniciar para começar o jogo...");
             }
         }
     }
@@ -50,7 +51,8 @@ public class Server extends WebSocketServer {
         });
         System.out.println("Conexão com o web socket ["+conn.toString()+"] fechada:\n" +
                         "+ Fechamento causado pelo client: "+remote+"\n" +
-                        "+ Razão: "+reason);
+                        "+ Razão: "+reason+"\n"+
+                        "+ Código: "+code);
         if(connections.size() == 0){
             finishGame(false);
         }
@@ -105,7 +107,6 @@ public class Server extends WebSocketServer {
     }
 
     public void processGameMessage(String message, String clientId){
-        System.out.println(message);
         Player playerSentWord = mapaPalavras.get(clientId);
         if (playerSentWord.contabilizeNewWord(message)) {
             finishGame(true);
@@ -113,8 +114,7 @@ public class Server extends WebSocketServer {
     }
 
     private void finishGame(boolean playerFinished){
-        System.out.println("Jogo finalizado:\n " +
-                "+ Usuário terminou com o jogo: "+playerFinished);
+        System.out.println("Jogo finalizado...");
         cronometra(false);
         this.time = 0;
         this.playing = false;
@@ -131,6 +131,7 @@ public class Server extends WebSocketServer {
             broadcast(classificacaoStr);
             broadcast("Digite iniciar para começar o jogo...");
         }
+        cronometro = new Timer();
         mapaPalavras = new HashMap<>();
     }
 
