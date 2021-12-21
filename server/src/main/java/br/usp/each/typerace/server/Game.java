@@ -10,8 +10,7 @@ public class Game {
 
     private long timeStart;
     private long timeFinish;
-    //private String sentence = "the size and age of the cosmos are beyond ordinary human understanding lost somewhere between immensity eternity is our tiny planetary home";
-    private String sentence = "teste isso";
+    private String sentence = "the size and age of the cosmos are beyond ordinary human understanding lost somewhere between immensity eternity is our tiny planetary home";
     private List<String> words;
 
     public Game(){

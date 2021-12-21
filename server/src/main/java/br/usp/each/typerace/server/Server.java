@@ -37,6 +37,7 @@ public class Server extends WebSocketServer {
         System.out.println( "new connection to " + conn.getRemoteSocketAddress() );
         connections.put( conn.getAttachment(), conn );
 
+        sendInstructions(conn);
         players.put(conn.getAttachment(), new Player(conn.getAttachment(), typeraceGame.getWords()));
     }
 
@@ -58,6 +59,7 @@ public class Server extends WebSocketServer {
 
         if (!gameStarted){
             if (message.equalsIgnoreCase("start")){
+                message = "";
                 broadcast("game start");
                 gameStarted = true;
                 broadcast("PALAVRAS : " + typeraceGame.getSentence());  
@@ -65,14 +67,14 @@ public class Server extends WebSocketServer {
             }
 
             else if (message.equalsIgnoreCase("sair")){
-                onClose(conn, 0, "exit before game start", false);
+                onClose(conn, 0, "Jogador saiu antes do jogo", false);
             }
 
             else
                 broadcast("Cliente " + conn.getAttachment() + " : " + message);
         }
 
-        if (gameStarted) {
+        if (gameStarted && !message.isEmpty()) {
 
             Player pl = players.get(conn.getAttachment());
             conn.send(message);
@@ -85,11 +87,9 @@ public class Server extends WebSocketServer {
                 broadcastStatics();
             }
             else{
-                broadcast("not yet");
+                broadcast(message);
             }
         }
-
-
     }
 
     @Override
@@ -121,17 +121,28 @@ public class Server extends WebSocketServer {
         return ret;
     }
 
+    public void sendInstructions(WebSocket conn){
+
+        conn.send(
+        
+            "\n\nPara iniciar o jogo, digite <start>\n" +
+            "Para sair, digite <exit>\n" +
+            "Para conversar com outros usuarios, digite a mensagem\n\n"
+            
+        );
+    }
+
     public void broadcastStatics(){
-        broadcast("====================");
-        broadcast("Duracao da partida : " + typeraceGame.timeElapsedSeconds() + "\n");
+        broadcast("========================================");
+        broadcast("Duracao da partida : " + typeraceGame.timeElapsedSeconds() + "s\n");
 
         broadcast("Ranking :");
         List<Player> rankedPl = typeraceGame.ranking(players);
         int i = 0;
         for (Player pl : rankedPl){
-            broadcast((++i) + " - " + pl.getId() + " : " + pl.getCorrect() + " corretas, " + pl.getWrong() + " erradas");
+            broadcast((++i) + ") " + "Jogador " + pl.getId() + " : " + pl.getCorrect() + " corretas, " + pl.getWrong() + " erradas");
         }
-        broadcast("====================");
+        broadcast("========================================");
     }
 
 }

@@ -16,7 +16,7 @@ public class Client extends WebSocketClient {
 
     @Override
     public void onOpen(ServerHandshake handshakedata) {
-        System.out.println("Nova conexao aberta");
+        System.out.println("New connection opened");
     }
 
     @Override
