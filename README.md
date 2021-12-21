@@ -29,14 +29,15 @@ Para rodar um cliente
 
 ## Instruções do jogo
 
-#* Regras do Jogo
+* Regras do Jogo
 
-  •	Envie uma palavra por vez
-  •	Não há ordem específica para enviar palavras
-  •	Palavras podem ser maiúsculas ou minúsculas
-  •	Palavras erradas não tiram ponto
+  •	Envie uma palavra por vez <br>
+  •	Não há ordem específica para enviar palavras<br>
+  •	Palavras podem ser maiúsculas ou minúsculas<br>
+  •	Palavras erradas não tiram ponto<br>
   
-*o	Comandos:
-  *o	Digite "Start " para começar
-  *o	Digite "Sair" para sair antes do jogo iniciar
-  *o	Digite "exit" para sair a qualquer hora
+o	Comandos:<br>
+
+  o	Digite "Start " para começar<br>
+  o	Digite "Sair" para sair antes do jogo iniciar<br>
+  o	Digite "exit" para sair a qualquer hora<br>
