@@ -7,19 +7,18 @@ import org.apache.pdfbox.text.PDFTextStripper;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class ReaderPDF {
 
     private String path;
     private String fullText;
-    private Set<String> utilDB;
+    private Set<String[]> utilDB;
 
-    public ReaderPDF(String path, String fullText, Set<String> utilDB) {
+    public ReaderPDF(String path) {
         this.path = path;
-        this.fullText = fullText;
-        this.utilDB = utilDB;
+        this.fullText = "";
+        this.utilDB = new HashSet<>();
     }
 
     //Responsavel por ler o PDF e convertelo em uma String
@@ -45,8 +44,12 @@ public class ReaderPDF {
 
     //responsável por ler a String e converter em um Set
     public void gerateUtilDB(){
-        List<String> texts = List.of(this.fullText.split(" "));
-        this.utilDB.addAll(texts);
+        String[] temp = this.fullText.split(" ");
+        for(String word: temp){
+            String[] wordArray = {word};
+            this.utilDB.add(wordArray);
+        }
+
     }
 
 
@@ -67,11 +70,11 @@ public class ReaderPDF {
         this.fullText = fullText;
     }
 
-    public Set<String> getUtilDB() {
+    public Collection<? extends String[]> getUtilDB() {
         return utilDB;
     }
 
-    public void setUtilDB(Set<String> utilDB) {
+    public void setUtilDB(Set<String[]> utilDB) {
         this.utilDB = utilDB;
     }
 }
