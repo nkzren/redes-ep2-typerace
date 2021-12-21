@@ -6,7 +6,7 @@ Repositório para o EP2 de Redes de Computadores, EACH-USP - 2021/2
 * Maraiza Adami Pereira - 6836201
 * Matheus Pecoraro de Carvalho Santos - 11917271
 * Sungwon Yoon - 9822261
-* Vinicius Almeida -
+* Vinicius Almeida - 10816815
 <br>
 
 
