@@ -102,10 +102,6 @@ public class Server extends WebSocketServer {
         typeraceGame = new Game();
     }
 
-    public String getAddress(){
-        return "implementar";
-    }
-
     // Retorna o menor id ainda não utilizado e o adiciona em idList
     public ByteBuffer assignId() {
         ByteBuffer ret = ByteBuffer.allocate(Integer.BYTES);
