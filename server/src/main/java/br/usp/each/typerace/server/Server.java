@@ -77,17 +77,12 @@ public class Server extends WebSocketServer {
         if (gameStarted && !message.isEmpty()) {
 
             Player pl = players.get(conn.getAttachment());
-            conn.send(message);
-
             if (pl.wordTyped(message) == true){
 
                 broadcast("game over");
                 gameStarted = false;
                 typeraceGame.stopTime();
                 broadcastStatics();
-            }
-            else{
-                broadcast(message);
             }
         }
     }
