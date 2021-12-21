@@ -18,11 +18,12 @@ public class ServerMain {
     }
 
     public static void main(String[] args) {
+
         WebSocketServer server = new Server(8080, new HashMap<>());
 
         ServerMain main = new ServerMain(server);
 
-        main.init();
+        main.init();       
     }
 
 }

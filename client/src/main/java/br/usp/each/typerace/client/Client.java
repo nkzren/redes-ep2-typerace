@@ -12,7 +12,7 @@ public class Client extends WebSocketClient {
         super(serverUri);
     }
 
-    private static String id = UUID.randomUUID().toString();
+    private String id = UUID.randomUUID().toString();
 
     private static int MAX_RETRY = 5;
 

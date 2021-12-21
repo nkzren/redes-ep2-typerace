@@ -88,7 +88,7 @@ public class Server extends WebSocketServer {
         broadcast("Lista de palavras:"+listaDePalavras(palavrasSet));
     }
 
-    public Set montaListaDePalavras(String[] palavras){
+    public Set<String> montaListaDePalavras(String[] palavras){
         Set<String> palavrasSet = new HashSet<>();
         int random = 0;
         while(palavrasSet.size() != 5){
