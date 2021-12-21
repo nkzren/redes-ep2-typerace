@@ -57,16 +57,18 @@ public class Server extends WebSocketServer {
     @Override
     public void onMessage(WebSocket conn, String message) {
 
+    	String messageLower = message.toLowerCase();
+
         if (!gameStarted){
-            if (message.equalsIgnoreCase("start")){
-                message = "";
+            if (messageLower.equals("start")){
+                messageLower = "";
                 broadcast("game start");
                 gameStarted = true;
                 broadcast("PALAVRAS : " + typeraceGame.getSentence());  
                 typeraceGame.countTime();                
             }
 
-            else if (message.equalsIgnoreCase("sair")){
+            else if (messageLower.equalsIgnoreCase("sair")){
                 onClose(conn, 0, "Jogador saiu antes do jogo", false);
             }
 
@@ -74,10 +76,10 @@ public class Server extends WebSocketServer {
                 broadcast("Cliente " + conn.getAttachment() + " : " + message);
         }
 
-        if (gameStarted && !message.isEmpty()) {
+        if (gameStarted && !messageLower.isEmpty()) {
 
             Player pl = players.get(conn.getAttachment());
-            if (pl.wordTyped(message) == true){
+            if (pl.wordTyped(messageLower) == true){
 
                 broadcast("game over");
                 gameStarted = false;
