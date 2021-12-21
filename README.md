@@ -29,12 +29,12 @@ Para rodar um cliente
 
 ## Instruções do jogo
 
-* Regras do Jogo
+#* Regras do Jogo
 
-  *•	Envie uma palavra por vez
-  *•	Não há ordem específica para enviar palavras
-  *•	Palavras podem ser maiúsculas ou minúsculas
-  *•	Palavras erradas não tiram ponto
+  •	Envie uma palavra por vez
+  •	Não há ordem específica para enviar palavras
+  •	Palavras podem ser maiúsculas ou minúsculas
+  •	Palavras erradas não tiram ponto
   
 *o	Comandos:
   *o	Digite "Start " para começar
