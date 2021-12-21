@@ -62,13 +62,13 @@ public class Server extends WebSocketServer {
         if (!gameStarted){
             if (messageLower.equals("start")){
                 messageLower = "";
-                broadcast("game start");
+                broadcast("GAME START");
                 gameStarted = true;
                 broadcast("PALAVRAS : " + typeraceGame.getSentence());  
                 typeraceGame.countTime();                
             }
 
-            else if (messageLower.equalsIgnoreCase("sair")){
+            else if (messageLower.equals("sair")){
                 onClose(conn, 0, "Jogador saiu antes do jogo", false);
             }
 
@@ -81,7 +81,7 @@ public class Server extends WebSocketServer {
             Player pl = players.get(conn.getAttachment());
             if (pl.wordTyped(messageLower) == true){
 
-                broadcast("game over");
+                broadcast("GAME OVER");
                 gameStarted = false;
                 typeraceGame.stopTime();
                 broadcastStatics();
