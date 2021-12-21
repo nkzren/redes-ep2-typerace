@@ -8,40 +8,42 @@ import java.util.List;
 
 public class Game {
 
-    private long time;
-    private ArrayList<String> words;
-    private List<Player> players; 
+    private long timeStart;
+    private long timeFinish;
+    private String sentence = "the size and age of the cosmos are beyond ordinary human understanding lost somewhere between immensity eternity is our tiny planetary home";
+    private List<String> words;
 
     public Game(){
-
-        makeWordList();
-        
+        words = new ArrayList<String>(Arrays.asList(this.sentence.split(" ")));
     }
 
-    public void makeWordList(){
-        String sentence = "the size and age of the cosmos are beyond ordinary human understanding lost somewhere between immensity eternity is our tiny planetary home";
-        words = new ArrayList<String>(Arrays.asList(sentence.split(" ")));
+    public String broadcastWords(Map<Integer, Player> players){
+
+        for (Player pl : players.values()){
+            pl.wordsRemaining = this.words;
+        }
+
+        return sentence;
     }
 
-    public void addPlayer(Player player){
-        this.players.add(player);
+    public void countTime(){
+        timeStart = System.currentTimeMillis();
     }
 
-    public void removePlayer(Player player){
-        this.players.remove(player);
+    public void stopTime(){
+        timeFinish = System.currentTimeMillis();
     }
 
-    public void startGame(){
-        // time counter
+    public double timeElapsedSeconds(){
+        return (timeFinish - timeStart) / 1000;
     }
 
-    public void finishGame(){
-        // time counter
-    }
+    public List<Player> ranking(Map<Integer, Player> players){
 
-    public List<Player> ranking(){
-        Collections.sort(players);
-        return players;
+        List<Player> pl = new ArrayList<Player>(players.values());
+        Collections.sort(pl);
+
+        return pl;
     }
 
 

@@ -17,6 +17,8 @@ public class Server extends WebSocketServer {
 
     private boolean gameStarted = false;
     private Game typeraceGame;
+    private Map<Integer, Player> players; 
+
 
     public Server(int port, Map<Integer, WebSocket> connections) {
         super(new InetSocketAddress(port));
@@ -34,7 +36,7 @@ public class Server extends WebSocketServer {
         System.out.println( "new connection to " + conn.getRemoteSocketAddress() );
         connections.put( conn.getAttachment(), conn );
 
-        typeraceGame.addPlayer(new Player(conn.getAttachment()));
+        players.add(conn.getAttachment(), new Player(conn.getAttachment()));
     }
 
     @Override
@@ -47,7 +49,7 @@ public class Server extends WebSocketServer {
         broadcast( "Jogador de id: " + id + " desconectou" +
                 "\nJogadores conectados: " + (--counter) );
                 
-        typeraceGame.removePlayer(conn.getAttachment());
+        players.remove(conn.getAttachment());
     }
 
     @Override
@@ -55,10 +57,9 @@ public class Server extends WebSocketServer {
 
         if (!gameStarted){
             if (message.equalsIgnoreCase("start")){
-
-                // broadcast(lista de palavras);
+                broadcast( typeraceGame.broadcastWords(players) );
+                typeraceGame.countTime();
                 gameStarted = true;
-                // game start 
             }
 
             else if (message.equalsIgnoreCase("exit")){
@@ -69,12 +70,20 @@ public class Server extends WebSocketServer {
             broadcast(message);
         }
 
-        while (true){
+        while (gameStarted){
 
-            // jogo iniciado
+            Player pl = players.get(conn.getAttachment());
+            if (pl.wordTyped(message) == true){
+
+                broadcast("game over");
+                gameStarted = false;
+                typeraceGame.stopTime();
+                broadcastStatics();
+
+                break;
+            }
 
         }
-
     }
 
     @Override
@@ -93,6 +102,10 @@ public class Server extends WebSocketServer {
         typeraceGame = new Game();
     }
 
+    public String getAddress(){
+        return "implementar";
+    }
+
     // Retorna o menor id ainda não utilizado e o adiciona em idList
     public ByteBuffer assignId() {
         ByteBuffer ret = ByteBuffer.allocate(Integer.BYTES);
@@ -104,6 +117,17 @@ public class Server extends WebSocketServer {
         idList.add(i);
         ret.putInt(0, i);
         return ret;
+    }
+
+    public void broadcastStatics(){
+        broadcast("Duracao da partida : " + typeraceGame.timeElapsedSeconds() + "\n");
+
+        broadcast("Ranking :");
+        List<Player> rankedPl = typeraceGame.ranking(players);
+        int i = 0;
+        for (Player pl : rankedPl){
+            broadcast((++i) + " - " + pl.getId() + " : " + pl.getCorrect() + "corretas, " + pl.getWrong() + "erradas");
+        }
     }
 
 }

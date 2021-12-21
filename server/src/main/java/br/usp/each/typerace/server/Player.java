@@ -8,8 +8,7 @@ public class Player implements Comparable<Player> {
     private final Integer id;
     private int correct;
     private int wrong;
-    
-    private List<String> wordsRemaining;
+    public List<String> wordsRemaining;
 
 
     public Player (Integer id){
@@ -30,7 +29,6 @@ public class Player implements Comparable<Player> {
         return this.wrong;
     }
 
-
     public boolean wordTyped(String word){
 
         if (wordsRemaining.contains(word)){
@@ -43,7 +41,6 @@ public class Player implements Comparable<Player> {
 
         return playerStatus();
     }
-
 
     // status do jogador
     public boolean playerStatus(){
