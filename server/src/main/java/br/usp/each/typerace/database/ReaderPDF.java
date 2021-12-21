@@ -10,18 +10,19 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Set;
 
-public class Reader {
+public class ReaderPDF {
 
     private String path;
     private String fullText;
     private Set<String> utilDB;
 
-    public Reader(String path, String fullText, Set<String> utilDB) {
+    public ReaderPDF(String path, String fullText, Set<String> utilDB) {
         this.path = path;
         this.fullText = fullText;
         this.utilDB = utilDB;
     }
 
+    //Responsavel por ler o PDF e convertelo em uma String
     public void gerateFullText(){
         File file = new File(path);
         try {
@@ -42,6 +43,7 @@ public class Reader {
         }
     }
 
+    //responsável por ler a String e converter em um Set
     public void gerateUtilDB(){
         List<String> texts = List.of(this.fullText.split(" "));
         this.utilDB.addAll(texts);
