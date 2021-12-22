@@ -9,21 +9,24 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class Server extends WebSocketServer {
-    private boolean playing;
-    private Map<String, WebSocket> connections;
-    private Map<String/*clientId*/, Player> mapaPalavras;
+    private boolean playing = false; //Flag refente se o jogo começou ou não
+    private Map<String, WebSocket> connections; //Map armazenandos os clients conectados
+    private Map<String/*clientId*/, Player> mapaPalavras; 
     private String[] lista = {"batata","feijão","arroz","dale","pão","mesa","celular","computador","livro","documento","controle","joelheira","carteira","mouse","desodorante","pedra","tecla","sacola","tomada","janela","tela"};
+    //Variáveis referentes a contabilização do tempo
     private int time = 0;
     private int min = 0;
     private int sec = 0;
     Timer cronometro = new Timer();
 
+    //Contrutor da classe
     public Server(int port, Map<String, WebSocket> connections) {
         super(new InetSocketAddress(port));
         this.connections = connections;
         mapaPalavras = new HashMap<>();
     }
 
+    //Quando o client faz uma solicitação de conexão para o server executa esse método
     @Override
     public void onOpen(WebSocket conn, ClientHandshake handshake) {
         if(playing){
@@ -34,6 +37,8 @@ public class Server extends WebSocketServer {
             if(connections.containsKey(uuid)){
                 conn.close(405, "ID já usado");
             } else{
+                //Caso o jogo não esteja iniciado e não exista um client com o Id do client que fez a solicitação o server aceita a 
+                //conexão do client e manda uma mensagem para todos os clients avisando que tal client se conectou
                 connections.put(uuid, conn);
                 System.out.println("Cliente conectado com uuid ["+uuid+"]");
                 broadcast("Número de jogadores conectados no momento: "+connections.size());
@@ -42,22 +47,27 @@ public class Server extends WebSocketServer {
         }
     }
 
+    //Quando ocorre uma finalização na conexão entre o client e o server executa esse método 
     @Override
     public void onClose(WebSocket conn, int code, String reason, boolean remote) {
-        Set<String> ids = connections.keySet().stream().filter(x -> conn.equals(connections.get(x))).collect(Collectors.toSet());
+        Set<String> ids = connections.keySet().stream().filter(x -> conn.equals(connections.get(x)))
+                .collect(Collectors.toSet());
+        // Remove os clients dos mapas
         ids.forEach((x) -> {
             connections.remove(x);
             mapaPalavras.remove(x);
         });
-        System.out.println("Conexão com o web socket ["+conn.toString()+"] fechada:\n" +
-                        "+ Fechamento causado pelo client: "+remote+"\n" +
-                        "+ Razão: "+reason+"\n"+
-                        "+ Código: "+code);
-        if(connections.size() == 0){
+        System.out.println("Conexão com o web socket [" + conn.toString() + "] fechada:\n" +
+                "+ Fechamento causado pelo client: " + remote + "\n" +
+                "+ Razão: " + reason + "\n" +
+                "+ Código: " + code);
+        if (connections.size() == 0) {
             finishGame(false);
         }
+        
     }
 
+    //Recebe mensagens do client e executa intruções relativas a mensagens recebidas
     @Override
     public void onMessage(WebSocket conn, String message) {
 
@@ -75,7 +85,9 @@ public class Server extends WebSocketServer {
             }
         }
     }
-    
+
+
+    //Método de iniciar o jogo
     public void initGame(){
         playing = true;
         Set<String> palavrasSet = montaListaDePalavras(lista);
@@ -88,6 +100,7 @@ public class Server extends WebSocketServer {
         broadcast("Lista de palavras:"+listaDePalavras(palavrasSet));
     }
 
+    //Através de uma lista de palavras maior seleciona palavras aleatoriamente dentro dessa lista e cria um lista menor
     public Set<String> montaListaDePalavras(String[] palavras){
         Set<String> palavrasSet = new HashSet<>();
         int random = 0;
@@ -98,6 +111,7 @@ public class Server extends WebSocketServer {
         return palavrasSet;
     }
 
+    //Printa a lista de palavras
     public String listaDePalavras(Set<String> palavras){
         String resultado = "";
         for (String a : palavras){
@@ -106,6 +120,7 @@ public class Server extends WebSocketServer {
         return resultado+"\n";
     }
 
+    //Método que verifica se o player digitou todas as palavras, assim quando isso ocorrer chama o método para encerrar o jogo
     public void processGameMessage(String message, String clientId){
         Player playerSentWord = mapaPalavras.get(clientId);
         if (playerSentWord.contabilizeNewWord(message)) {
@@ -113,6 +128,7 @@ public class Server extends WebSocketServer {
         }
     }
 
+    //Método que finaliza o jogo, reinicializando as váriavéis referente ao jogo e contabilizando a classificação dos players
     private void finishGame(boolean playerFinished){
         System.out.println("Jogo finalizado...");
         cronometra(false);
@@ -135,6 +151,7 @@ public class Server extends WebSocketServer {
         mapaPalavras = new HashMap<>();
     }
 
+    //Caso de erro ao efetuar a conexão com o cliente erro ao executar o servidor mostra uma mensagem
     @Override
     public void onError(WebSocket conn, Exception ex) {
         if(conn != null){
@@ -149,12 +166,14 @@ public class Server extends WebSocketServer {
         }
     }
 
+    //Ao iniciar o server com o comando mostra mensagem de sucesso caso dê certo
     @Override
     public void onStart() {
         System.out.println("Nenhum erro na inicialização encontrado");
         System.out.println("Servidor inicializado corretamente na porta: "+this.getPort());
     }
 
+    //Método para cronometrar o tempo, contabilizado a cada segundo
     public void cronometra(boolean flag){
         if(!flag){
             cronometro.cancel();

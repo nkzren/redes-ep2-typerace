@@ -21,7 +21,6 @@ class ServerMainTest {
     @Test
     void deveIniciarUmServidor() {
         subject.init();
-
         verify(serverMock).start();
     }
 }

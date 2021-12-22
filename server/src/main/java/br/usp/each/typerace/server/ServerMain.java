@@ -19,7 +19,7 @@ public class ServerMain {
 
     public static void main(String[] args) {
 
-        WebSocketServer server = new Server(8080, new HashMap<>());
+        WebSocketServer server = new Server(Integer.parseInt(args[0]), new HashMap<>());//Pega a porta do servidor através de argumento
 
         ServerMain main = new ServerMain(server);
 

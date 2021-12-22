@@ -4,12 +4,13 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class Player implements Comparable<Player>{
-    private static int wordCount = 0;
+    private static int wordCount = 0; //Contador de total de palavras digitadas para todos os players
     private int errorQuantity;
-    private Set<String> wordsMissing;
-    private int lastWordTime;
+    private Set<String> wordsMissing; // Palavras que faltam ser digitadas para o player
+    private int lastWordTime; // Contagem da última palavra digitada
     private String idPlayer;
-    private int acertos;
+    private int acertos; 
+    //Contrutor do player
     public Player(Set<String> palavras, String idPlayer){
         this.errorQuantity = 0;
         this.wordsMissing = new HashSet<>(palavras);
@@ -44,6 +45,8 @@ public class Player implements Comparable<Player>{
     public static void restartLastWordTimeClassification(){
         wordCount = 0;
     }
+
+    //Comparador entre player para efetuar a classificação
     @Override
     public int compareTo(Player otherPlayer) {
         int qtdAcertosDif = this.getAcertos() - otherPlayer.getAcertos();
