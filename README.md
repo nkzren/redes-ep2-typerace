@@ -5,7 +5,7 @@ Repositório para o EP2 de Redes de Computadores, EACH-USP - 2021/2
 * Gabriel Braga Lagrotaria de Oliveira - 11796600
 * Rodrigo Fernandes Gomes Vieira - 11796548
 * Matheus Aranha Lopes - 11221219
-* Rafael Afonso Stettiner - 4444444
+* Rafael Afonso Stettiner - 11912189
 
 ## Pré-requisitos
 * JDK 11 ou maior (testado com a JDK11 OpenJDK)
