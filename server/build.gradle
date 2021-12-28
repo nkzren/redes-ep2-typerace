@@ -29,3 +29,15 @@ test {
 application {
     mainClass = 'br.usp.each.typerace.server.ServerMain'
 }
+
+task buildDB(type: JavaExec){
+    group = 'build'
+    description = 'Task to build all words DB'
+    doFirst {
+        println 'Building word DataBase'
+    }
+
+    classpath = sourceSets.main.runtimeClasspath
+    main = 'br.usp.each.typerace.database.GerateDB'
+
+}

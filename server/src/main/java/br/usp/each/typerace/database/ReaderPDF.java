@@ -44,10 +44,14 @@ public class ReaderPDF {
 
     //responsável por ler a String e converter em um Set
     public void gerateUtilDB(){
-        String[] temp = this.fullText.split(" ");
+            String[] temp = this.fullText.split("\\s");
         for(String word: temp){
-            String[] wordArray = {word};
-            this.utilDB.add(wordArray);
+           // System.out.println(word);
+            if(word.length() > 5){
+                String result = word.replaceAll("\\p{Punct}", "");
+                String[] wordArray = {result.toLowerCase()};
+                this.utilDB.add(wordArray);
+            }
         }
 
     }

@@ -31,7 +31,7 @@ public class WriterCSV {
         try {
             Writer writer = Files.newBufferedWriter(Paths.get(pathWrite));
             CSVWriter csvWriter = new CSVWriter(writer);
-            csvWriter.writeNext(cabecalho);
+            //csvWriter.writeNext(cabecalho);
             csvWriter.writeAll(linhas);
             csvWriter.flush();
             writer.close();
