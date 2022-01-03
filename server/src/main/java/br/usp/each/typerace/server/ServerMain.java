@@ -1,6 +1,8 @@
 package br.usp.each.typerace.server;
 
 import org.java_websocket.server.WebSocketServer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 
@@ -11,9 +13,10 @@ public class ServerMain {
     public ServerMain(WebSocketServer server) {
         this.server = server;
     }
+    private static final Logger LOGGER = LoggerFactory.getLogger(ServerMain.class);
 
     public void init() {
-        System.out.println("Iniciando servidor...");
+        LOGGER.info("Iniciando servidor...");
         // TODO: Implementar
     }
 
