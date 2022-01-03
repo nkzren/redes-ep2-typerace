@@ -1,6 +1,8 @@
 package br.usp.each.typerace.database;
 
 import com.opencsv.CSVWriter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.Writer;
@@ -13,6 +15,7 @@ public class WriterCSV {
 
 
     private String pathRead, pathWrite;
+    private static final Logger LOGGER = LoggerFactory.getLogger(WriterCSV.class);
 
     public WriterCSV(String pathRead, String pathWrite) {
         this.pathRead = pathRead;
@@ -23,9 +26,9 @@ public class WriterCSV {
         String[] cabecalho = {"Palavras"};
         ReaderPDF readerPDF = new ReaderPDF(pathRead);
         readerPDF.gerateFullText();
-        System.out.println("Text Gerate");
+        LOGGER.info("Text Gerate");
         readerPDF.gerateUtilDB();
-        System.out.println("DB Gerate");
+        LOGGER.info("DB Gerate");
         List<String[]> linhas = new ArrayList<>(readerPDF.getUtilDB());
 
         try {
@@ -35,7 +38,7 @@ public class WriterCSV {
             csvWriter.writeAll(linhas);
             csvWriter.flush();
             writer.close();
-            System.out.println(".csv Write");
+            LOGGER.info(".csv Write");
         } catch (IOException e) {
             e.printStackTrace();
         }
