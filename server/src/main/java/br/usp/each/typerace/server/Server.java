@@ -16,27 +16,44 @@ public class Server extends WebSocketServer {
         this.connections = connections;
     }
 
-    @Override
+    @Override //Quando alguem entra no jogo
     public void onOpen(WebSocket conn, ClientHandshake handshake) {
         // TODO: Implementar
+        String newPlayer = conn.getResourceDescriptor();;
+        connections.put(newPlayer, conn);
+        this.connections.forEach((id,conns) -> conns.send(newPlayer+" se juntou ao jogo"));
+        //Testar depois se o id é valido
+
+       
     }
 
-    @Override
+    @Override //Pede pra sair do jogo
     public void onClose(WebSocket conn, int code, String reason, boolean remote) {
         // TODO: Implementar
+        connections.remove(conn.getResourceDescriptor());
+        if(!conn.isClosed()) conn.close(code, reason);
     }
 
-    @Override
+    @Override //Quando mandam qualquer coisa para o servidor, provavelmente, as respostas
     public void onMessage(WebSocket conn, String message) {
         // TODO: Implementar
+        if(message.equalsIgnoreCase("start")){
+            //começa o jogo
+        }
+        else if(message.equalsIgnoreCase("stop")){
+            //termina o jogo pra todo mundo
+        }
+        else{
+            //verifica se a palavra está no banco de palavras possiveis
+        }
     }
 
-    @Override
+    @Override //Caso aconteça algo
     public void onError(WebSocket conn, Exception ex) {
         // TODO: Implementar
     }
 
-    @Override
+    @Override //Quando o server começar
     public void onStart() {
         // TODO: Implementar
     }
