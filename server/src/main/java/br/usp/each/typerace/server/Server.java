@@ -30,10 +30,11 @@ public class Server extends WebSocketServer {
     public void onOpen(WebSocket conn, ClientHandshake handshake) {
         // TODO: Implementar
         String newPlayer = configuraId(conn.getResourceDescriptor());
-        connections.put(newPlayer, conn);
+        System.out.println(newPlayer);
+        this.connections.put(newPlayer, conn);
         Jogador novo = new Jogador(newPlayer, new ArrayList<>());
         Jogadores.put(newPlayer, novo);
-        this.connections.forEach((id,conns) -> conns.send(newPlayer+" se juntou ao jogo"));
+        this.connections.forEach((ids,conns) -> conns.send(newPlayer+" se juntou ao jogo"));
         //Testar depois se o id é valido
 
        
@@ -51,13 +52,17 @@ public class Server extends WebSocketServer {
         // TODO: Implementar
         if(message.equalsIgnoreCase("start")){
             //começa o jogo
+            conn.send("Banana");
         }
         else if(message.equalsIgnoreCase("stop")){
             //termina o jogo pra todo mundo
         }
+        else if(message.equalsIgnoreCase("exit")){
+            //desconecta o jogador
+        }
         else{
             //verifica se a palavra está no banco de palavras possiveis
-
+            conn.send("Maca");
         }
     }
 
@@ -69,5 +74,6 @@ public class Server extends WebSocketServer {
     @Override //Quando o server começar
     public void onStart() {
         // TODO: Implementar
+        System.out.println("Server Online");
     }
 }

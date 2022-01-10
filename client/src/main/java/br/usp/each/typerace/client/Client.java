@@ -13,7 +13,7 @@ public class Client extends WebSocketClient {
 
     @Override
     public void onOpen(ServerHandshake handshakedata) {
-        System.out.println("Conectado com sucesso");
+        //System.out.println("Conectado com sucesso");
     }
 
     @Override

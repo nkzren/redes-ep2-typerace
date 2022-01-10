@@ -22,8 +22,7 @@ public class ServerMain {
         WebSocketServer server = new Server(8080, new HashMap<>());
         ServerMain main = new ServerMain(server);
         main.init();
-
-        
+   
     }
 
 }

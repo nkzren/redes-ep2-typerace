@@ -38,7 +38,12 @@ public class ClientMain {
             WebSocketClient client = new Client(new URI(uri));
             ClientMain main = new ClientMain(client);
             main.init(id);
+            System.out.println(client.getResourceDescriptor()); 
+            while(true){
+                client.send(sc.nextLine());
+            }
         } 
+        
         catch (URISyntaxException e) {
             e.printStackTrace();
         }
