@@ -13,7 +13,6 @@ public class Client extends WebSocketClient {
 
     @Override
     public void onOpen(ServerHandshake handshakedata) {
-        //System.out.println("Conectado com sucesso");
     }
 
     @Override
@@ -24,11 +23,11 @@ public class Client extends WebSocketClient {
     @Override
     public void onClose(int code, String reason, boolean remote) {
         // TODO: Implementar
-        System.out.println("Conexão fechada \n Motivo:" +reason);
+        System.out.println("Conexão fechada\nDigite algo para encerrar a aplicação");
     }
 
     @Override
-    public void onError(Exception ex) {
+    public void onError(Exception ex) { 
         // TODO: Implementar
         System.out.println(ex.toString());
     }

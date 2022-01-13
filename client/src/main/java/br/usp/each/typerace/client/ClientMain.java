@@ -5,7 +5,6 @@ import org.java_websocket.client.WebSocketClient;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Scanner;
-import java.util.Set;
 
 public class ClientMain {
 
@@ -19,6 +18,7 @@ public class ClientMain {
         System.out.println("Iniciando cliente: " + idCliente);
         // TODO: Implementar
         client.connect();
+        
     }
 
     public static void main(String[] args) {
@@ -38,10 +38,13 @@ public class ClientMain {
             WebSocketClient client = new Client(new URI(uri));
             ClientMain main = new ClientMain(client);
             main.init(id);
-            System.out.println(client.getResourceDescriptor()); 
-            while(true){
-                client.send(sc.nextLine());
-            }
+            while(true){ 
+                String send = sc.nextLine();
+                if(client.isOpen()) client.send(send);
+                else break;
+                if(send.equalsIgnoreCase("exit")) break;
+        }
+        sc.close();
         } 
         
         catch (URISyntaxException e) {
