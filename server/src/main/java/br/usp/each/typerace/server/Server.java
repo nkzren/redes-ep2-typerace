@@ -99,6 +99,35 @@ public class Server extends WebSocketServer {
                 palavras.add("banana");
                 palavras.add("cupcake");
                 palavras.add("maca");
+                palavras.add("pet");
+                palavras.add("redes");
+                palavras.add("livro");
+                palavras.add("manga");
+                palavras.add("sala");
+                palavras.add("ceu");
+                palavras.add("paralelepipedo");
+                palavras.add("estetoscopio");
+                palavras.add("maria");
+                palavras.add("jose");
+                palavras.add("caixa-d'agua");
+                palavras.add("universidade");
+                palavras.add("keralux");
+                palavras.add("maximiliano");
+                palavras.add("computadores");
+                palavras.add("pacote");
+                palavras.add("uganda");
+                palavras.add("togo");
+                palavras.add("jogo");
+                palavras.add("biblioteca");
+                palavras.add("implementacao");
+                palavras.add("contextualizacao");
+                palavras.add("abnegacao");
+                palavras.add("determinacao");
+                palavras.add("foco");
+                palavras.add("desproporcionadamente");
+                palavras.add("orrinolaringologista");
+                palavras.add("caminho");
+
                 for(Jogador player : this.jogadores.values()){
                     if(player == null) continue;
                     player.setPalavras(palavras);
